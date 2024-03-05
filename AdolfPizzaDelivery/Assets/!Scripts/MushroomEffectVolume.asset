@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bd56424cbc00c42b272163fa9fa92f, type: 3}
+  m_Name: MushroomEffectVolume
+  m_EditorClassIdentifier: 
+  BloomThreshold: 0
+  BloomIntensity: 0
+  BloomTintColor: {r: 1, g: 1, b: 1, a: 0}
+  ChromAbberIntensity: 0
+  ColorCurvesMasterCurve:
+    <length>k__BackingField: 3
+    m_Loop: 0
+    m_ZeroValue: 0
+    m_Range: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.97358495
+        outSlope: 0.97358495
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.104166664
+      - serializedVersion: 3
+        time: 0.5015957
+        value: 0.041222513
+        inSlope: 0.07391369
+        outSlope: 0.07391369
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 4.1320777
+        outSlope: 4.1320777
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.09944354
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

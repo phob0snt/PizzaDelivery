@@ -19,12 +19,12 @@ public class SettingsManager : Singleton<SettingsManager>
     }
 
 
-    public void ChangeSensivity(float sensivity)
+    public void ChangeSensivity(float Sensivity)
     {
-        Settings.Sensivity = sensivity;
+        Settings.Sensivity = Sensivity;
         if (CameraRotation != null)
         {
-            CameraRotation.sensivity = sensivity;
+            CameraRotation.Sensivity = Sensivity;
         }
     }
 }

@@ -6,8 +6,11 @@ public class ViewManager : MonoBehaviour
 {
     [SerializeField] private View _startView;
     [SerializeField] private View[] _views;
+
     private View _currentView;
+
     private readonly Stack<View> _history = new();
+
     public static UnityEvent<bool> OnPaused = new();
 
     private void Start()
@@ -51,7 +54,6 @@ public class ViewManager : MonoBehaviour
                 _currentView = view;
             }
         }
-        Debug.Log(_history.Count);
     }
 
     public void Show(View view, bool remember = true, bool hidePrevious = true)
@@ -69,13 +71,29 @@ public class ViewManager : MonoBehaviour
         }
         view.Show();
         _currentView = view;
-        Debug.Log(_history.Count);
     }
 
     public void ShowLast()
     {
         if (_history.Count != 0)
             Show(_history.Pop(), false);
-        Debug.Log("YEP");
+    }
+
+    //public bool CheckIfViewEnabled<T>() where T : View
+    //{
+    //    foreach (var view in _history)
+    //    {
+    //        Debug.Log(view.GetType());
+    //        if (view is T)
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
+
+    public bool IsCurrentView<T>() where T : View
+    {
+        return _currentView is T;
     }
 }

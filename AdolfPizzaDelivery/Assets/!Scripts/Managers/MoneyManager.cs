@@ -1,60 +1,67 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class MoneyManager : MonoBehaviour
 {
-    private int _Money;
-    private int _OrderMoney;
-    private int _EarnedMoney;
+    private int _money;
+    private int _orderMoney;
+    private int _earnedMoney;
 
-    [SerializeField] private TMP_Text playerMoneyText;
-    [SerializeField] private TMP_Text earnedMoneyText;
-    [SerializeField] private TMP_Text orderMoneyText;
+    [SerializeField] private TMP_Text _playerMoneyText;
+    [SerializeField] private TMP_Text _earnedMoneyText;
+    [SerializeField] private TMP_Text _orderMoneyText;
+    [Inject] private ProgressManager _progressManager;
 
     private void Awake()
     {
-        playerMoneyText.text = _Money.ToString() + "$";
-        orderMoneyText.text = _OrderMoney.ToString() + "$";
-        earnedMoneyText.text = _EarnedMoney.ToString() + "$";
+        _playerMoneyText.text = _money.ToString() + "$";
+        _orderMoneyText.text = _orderMoney.ToString() + "$";
+        _earnedMoneyText.text = _earnedMoney.ToString() + "$";
     }
+
     private void OnEnable()
     {
         DeliveryManager.OnCompletedOrder.AddListener(IncreaseOrderMoney);
+        DeliveryManager.OnCompletedChain.AddListener(IncreasePlayerMoney);
+        DeliveryManager.OnCompletedChain.AddListener(ClearOrderMoney);
     }
 
     private void OnDisable()
     {
         DeliveryManager.OnCompletedOrder.RemoveListener(IncreaseOrderMoney);
+        DeliveryManager.OnCompletedChain.RemoveListener(IncreasePlayerMoney);
+        DeliveryManager.OnCompletedChain.RemoveListener(ClearOrderMoney);
     }
-    public void IncreaseOrderMoney(int pizzaMoney, int tipMoney)
+    public void IncreaseOrderMoney()
     {
-        _OrderMoney += pizzaMoney;
-        _EarnedMoney += tipMoney;
-        orderMoneyText.text = _OrderMoney.ToString() + "$";
-        earnedMoneyText.text = _EarnedMoney.ToString() + "$";
+        _orderMoney += (int)(Random.Range(8, 20) * _progressManager.GetLevelEarnMultiplier());
+        _earnedMoney += (int)(Random.Range(2, 5) * _progressManager.GetLevelEarnMultiplier());
+        _orderMoneyText.text = _orderMoney.ToString() + "$";
+        _earnedMoneyText.text = _earnedMoney.ToString() + "$";
     }
 
     public void ClearOrderMoney()
     {
-        _OrderMoney = 0;
-        _EarnedMoney = 0;
-        orderMoneyText.text = _OrderMoney.ToString() + "$";
-        earnedMoneyText.text = _EarnedMoney.ToString() + "$";
+        _orderMoney = 0;
+        _earnedMoney = 0;
+        _orderMoneyText.text = _orderMoney.ToString() + "$";
+        _earnedMoneyText.text = _earnedMoney.ToString() + "$";
     }
 
-    public void IncreaseMoney(int money)
+    public void IncreasePlayerMoney()
     {
-        _Money += money;
-        playerMoneyText.text = _Money.ToString() + "$";
+        _money += GetOrderMoney()[1];
+        _playerMoneyText.text = _money.ToString() + "$";
     }
 
     public int GetMoney()
     {
-        return _Money;
+        return _money;
     }
 
     public int[] GetOrderMoney()
     {
-        return new int[] {_OrderMoney, _EarnedMoney };
+        return new int[] {_orderMoney, _earnedMoney };
     }
 }

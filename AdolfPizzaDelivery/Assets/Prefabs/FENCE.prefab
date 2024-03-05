@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 857998833275192455}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FENCE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3198685953795737788}
   - component: {fileID: 3005367982929200244}
   - component: {fileID: 3800382123987925676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FENCEMETAL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 1265121015358352384}
   - component: {fileID: 6586896256363363786}
   - component: {fileID: 2226236905223820011}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FENCEMETALTUBE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -37,7 +37,7 @@ public class TOD_WeatherManager : MonoBehaviour
 	private float cloudOpacityMax;
 	private float cloudBrightnessMax;
 	private float atmosphereBrightnessMax;
-	private float rainEmissionMax;
+    [SerializeField] private float rainEmissionMax;
 
 	private float cloudOpacity;
 	private float cloudCoverage;
@@ -77,13 +77,11 @@ public class TOD_WeatherManager : MonoBehaviour
 		cloudBrightness      = sky.Clouds.Brightness;
 		atmosphereFog        = sky.Atmosphere.Fogginess;
 		atmosphereBrightness = sky.Atmosphere.Brightness;
-		rainEmission         = GetRainEmission();
 
 		// Get maximum values
 		cloudOpacityMax         = cloudOpacity;
 		cloudBrightnessMax      = cloudBrightness;
 		atmosphereBrightnessMax = atmosphereBrightness;
-		rainEmissionMax         = rainEmission;
 	}
 
 	protected void Update()
@@ -98,7 +96,7 @@ public class TOD_WeatherManager : MonoBehaviour
 				break;
 
 			case RainType.Light:
-				rainEmission = rainEmissionMax * 0.5f;
+				rainEmission = rainEmissionMax * 0.25f;
 				break;
 
 			case RainType.Heavy:

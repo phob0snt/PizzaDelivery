@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 0
-  m_FogColor: {r: 0.94159424, g: 0.98485976, b: 0.9945657, a: 1}
+  m_FogColor: {r: 0.4101899, g: 0.54433477, b: 0.6952732, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -1381,7 +1381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &694285577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2458,9 +2458,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531e33e940f3d4047ba11ea1f9920592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playBtn: {fileID: 808327991}
-  settingsBtn: {fileID: 1620239107}
-  quitBtn: {fileID: 138510825}
+  _playBtn: {fileID: 0}
+  _settingsBtn: {fileID: 0}
+  _quitBtn: {fileID: 0}
 --- !u!1 &1382859416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2731,7 +2731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76995707ca91f94496e259881f8f412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewManager: {fileID: 1943332402}
+  _viewManager: {fileID: 1943332402}
 --- !u!1 &1485184712
 GameObject:
   m_ObjectHideFlags: 0
@@ -3588,11 +3588,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a54ee0bf76920694ab6fe59559a59288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genSlider: {fileID: 262333905}
-  musicSlider: {fileID: 368415879}
-  soundsSlider: {fileID: 1236942446}
-  sensivitySlider: {fileID: 0}
-  applyBtn: {fileID: 649772640}
+  _genSlider: {fileID: 0}
+  _musicSlider: {fileID: 0}
+  _soundsSlider: {fileID: 0}
+  _sensivitySlider: {fileID: 0}
+  _applyBtn: {fileID: 0}
 --- !u!1 &1846463878
 GameObject:
   m_ObjectHideFlags: 0
@@ -4252,7 +4252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c53f56f13afd764e991284c78cad729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundType: 0
+  _soundType: 0
 --- !u!1 &2121628595
 GameObject:
   m_ObjectHideFlags: 0

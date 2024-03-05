@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using Zenject;
 
 public class MainMenuInstaller : MonoInstaller
 {
-    [SerializeField] private ViewManager viewManager;
+    [SerializeField] private ViewManager _viewManager;
     public override void InstallBindings()
     {
-        Container.Bind<ViewManager>().FromInstance(viewManager).AsSingle().NonLazy();
+        Container.Bind<ViewManager>().FromInstance(_viewManager).AsSingle().NonLazy();
     }
 }

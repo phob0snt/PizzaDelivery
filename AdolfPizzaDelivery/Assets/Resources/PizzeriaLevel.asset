@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8add6a2c64f166e47b5e8cdc2d9f4a86, type: 3}
   m_Name: PizzeriaLevel
   m_EditorClassIdentifier: 
-  _Level: 1
-  Progress: 0
+  _level: 2

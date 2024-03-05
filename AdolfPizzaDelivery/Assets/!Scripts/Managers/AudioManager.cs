@@ -1,19 +1,19 @@
+using Enums;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Enums;
-using UnityEngine.SceneManagement;
-using System.Collections;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
     private List<AudioSource> musicSources = new();
-    private List<AudioSource> soundSources = new();
-    private List<AssetReference> musicGameMix = new();
+    private List<AudioSource> _soundSources = new();
+    private List<AssetReference> _musicGameMix = new();
     private AsyncOperationHandle _currentMusicOperationHandler;
     public MusicState MusicState = MusicState.MainMenu;
-    private AudioClip musicResult;
+    private AudioClip _musicResult;
 
     public SettingsSO AudioSettings { get; private set; }
 
@@ -29,8 +29,8 @@ public class AudioManager : Singleton<AudioManager>
     private void Init()
     {
         var musicSO = Resources.Load<MusicSO>("MusicContainer");
-        musicGameMix.AddRange(musicSO.musicMix);
-        Debug.Log(musicGameMix.Count);
+        _musicGameMix.AddRange(musicSO.MusicMix);
+        Debug.Log(_musicGameMix.Count);
         AudioSettings = Resources.Load<SettingsSO>("GameSettings");
     }
 
@@ -43,7 +43,7 @@ public class AudioManager : Singleton<AudioManager>
                 StartCoroutine(PlayMusicMix());
         }
         else if (type == SoundType.Sound)
-            soundSources.Add(source);
+            _soundSources.Add(source);
         UpdateSourcesVol();
     }
 
@@ -54,17 +54,17 @@ public class AudioManager : Singleton<AudioManager>
             Addressables.Release(_currentMusicOperationHandler);
         }
 
-        var musicReference = musicGameMix[musicIndex];
+        var musicReference = _musicGameMix[musicIndex];
         _currentMusicOperationHandler = musicReference.LoadAssetAsync<AudioClip>();
         yield return _currentMusicOperationHandler;
-        musicResult = _currentMusicOperationHandler.Result as AudioClip;
+        _musicResult = _currentMusicOperationHandler.Result as AudioClip;
     }
 
     private IEnumerator PlayMusicMix()
     {
-        int index = Random.Range(0, musicGameMix.Count);
+        int index = Random.Range(0, _musicGameMix.Count);
         yield return SetMusicInternal(index);
-        musicSources[0].clip = musicResult;
+        musicSources[0].clip = _musicResult;
         musicSources[0].Play();
         while (musicSources[0].isPlaying)
             yield return null;
@@ -76,7 +76,7 @@ public class AudioManager : Singleton<AudioManager>
         if (type == SoundType.Music)
             musicSources.Remove(source);
         else if (type == SoundType.Sound)
-            soundSources.Remove(source);
+            _soundSources.Remove(source);
     }
 
     private void UpdateSourcesVol()
@@ -87,9 +87,9 @@ public class AudioManager : Singleton<AudioManager>
             foreach (var source in musicSources)
                 source.volume = AudioSettings.MusicVolume;
         }
-        if (soundSources != null)
+        if (_soundSources != null)
         {
-            foreach (var source in soundSources)
+            foreach (var source in _soundSources)
                 source.volume = AudioSettings.SoundsVolume;
         }
     }

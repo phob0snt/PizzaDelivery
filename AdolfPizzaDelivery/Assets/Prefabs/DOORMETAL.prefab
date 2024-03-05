@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5095762410185800404}
   - component: {fileID: 8698071547690465704}
   - component: {fileID: 4006184828975363937}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DOORMETAL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
