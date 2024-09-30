@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5779648920755941619}
   - component: {fileID: 5779648920755941618}
   - component: {fileID: 5779648920755941617}
+  - component: {fileID: 3120365074887419456}
   m_Layer: 0
   m_Name: Street Lamp
   m_TagString: Untagged
@@ -129,6 +130,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f121f990d9ebcfe4daf57c9aba3e96d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &3120365074887419456
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5779648920755941631}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.05
+  m_Height: 2.3364773
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.8627434, z: 0}
 --- !u!1001 &5779648919791551195
 PrefabInstance:
   m_ObjectHideFlags: 0

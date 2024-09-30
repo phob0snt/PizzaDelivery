@@ -5,6 +5,7 @@ public class PlayerView : View
 {
     [SerializeField] private Button _pauseBtn;
     [SerializeField] private Button _useBtn;
+    private IUsable _interactionTarget;
 
     public override void Init()
     {
@@ -26,14 +27,17 @@ public class PlayerView : View
         }
     }
 
-    public void ToggleUseBtn(bool state)
+    public void ToggleUseBtn(bool state, IUsable obj = null)
     {
         _useBtn.gameObject.SetActive(state);
+        if (state)
+            _interactionTarget = obj;
+        else
+            _interactionTarget = null;
     }
 
     public void Use()
     {
-        Player.Instance.ActivateMushroomEffect();
-        Debug.Log("skushal!");
+        _interactionTarget.Use();
     }
 }

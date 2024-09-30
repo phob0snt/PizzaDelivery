@@ -16,7 +16,7 @@ TagManager:
   - Minimap
   - NoCamCollide
   - NoLightAffect
-  - 
+  - TransparentRender
   - 
   - 
   - 

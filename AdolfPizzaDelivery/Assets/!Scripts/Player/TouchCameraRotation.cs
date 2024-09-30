@@ -3,46 +3,54 @@ using UnityEngine;
 
 public class TouchCameraRotation : MonoBehaviour
 {
-    [SerializeField] private CinemachineFreeLook _virtualCamera;
+    [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+    private CinemachinePOV _pov;
     [SerializeField] private FloatingJoystick _joystick;
+    private const int YAXIS_SENS_COEFF = 25;
     public float Sensivity;
-    private const int YAXIS_SENS_COEFF = 40;
-    public float XCamRotation;
-    public float YCamRotation;
-    private float _prevYRotation;
-    private const int MAX_XROTATION_DEGREE_PER_ONE_SLIDE = 60;
-    private float _currentDegree = 0;
+    public float XCamRotation
+    {
+        get { return _xCamRotation; }
+        set {
+            _pov.m_HorizontalAxis.Value = value;
+        }
+    }
+    private float _xCamRotation;
+    private bool _canRotate;
+    public float YRotation;
+    private Touch _rotationTouch;
 
     private void Awake()
     {
-        SettingsManager.Instance.CameraRotation = this;
+        SettingsManager.Instance.SetCameraRotation(this);
     }
 
-    void FixedUpdate()
+    private void Start()
     {
-        if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
+        _pov = _virtualCamera.GetCinemachineComponent<CinemachinePOV>();
+        XCamRotation = _pov.m_HorizontalAxis.Value;
+    }
+
+    private void Update()
+    {
+        if (Input.touchCount == 0)
         {
-            _virtualCamera.m_BindingMode = CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp;
-            _prevYRotation = _virtualCamera.m_YAxis.Value;
-            XCamRotation = _joystick.Horizontal * Sensivity;
-            YCamRotation = _joystick.Vertical * (Sensivity / YAXIS_SENS_COEFF);
-            _currentDegree += XCamRotation;
-            if (_currentDegree > MAX_XROTATION_DEGREE_PER_ONE_SLIDE)
-                _currentDegree = MAX_XROTATION_DEGREE_PER_ONE_SLIDE;
-            else if (_currentDegree < -MAX_XROTATION_DEGREE_PER_ONE_SLIDE)
-                _currentDegree = -MAX_XROTATION_DEGREE_PER_ONE_SLIDE;
-            if (_currentDegree < MAX_XROTATION_DEGREE_PER_ONE_SLIDE && XCamRotation > 0)
-                _virtualCamera.m_XAxis.Value = XCamRotation;
-            else if (_currentDegree > -MAX_XROTATION_DEGREE_PER_ONE_SLIDE && XCamRotation < 0)
-                _virtualCamera.m_XAxis.Value = XCamRotation;
-            _virtualCamera.m_YAxis.Value += YCamRotation;
-        }     
-        else
+            YRotation = 0;
+            _rotationTouch = new Touch();
+        }
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            _currentDegree = 0;
-            _virtualCamera.m_BindingMode = CinemachineTransposer.BindingMode.LockToTarget;
-            _virtualCamera.m_YAxis.Value = _prevYRotation;
-        }  
-        
+            if (Input.GetTouch(i).position.x > Screen.width / 2)
+            {
+                _rotationTouch = Input.GetTouch(i);
+                YRotation = _rotationTouch.deltaPosition.x * Time.deltaTime * Sensivity;
+                _pov.m_VerticalAxis.Value -= _rotationTouch.deltaPosition.y * Time.deltaTime * Sensivity;
+            }
+            else if (Input.GetTouch(i).fingerId == _rotationTouch.fingerId || _rotationTouch.phase == TouchPhase.Ended)
+            {
+                _rotationTouch = new Touch();
+                YRotation = 0;
+            }
+        }
     }
 }

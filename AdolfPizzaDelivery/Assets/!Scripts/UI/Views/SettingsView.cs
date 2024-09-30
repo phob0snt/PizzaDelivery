@@ -11,19 +11,23 @@ public class SettingsView : View
 
     public override void Init()
     {
-        _genSlider.value = AudioManager.Instance.AudioSettings.GeneralVolume * 100;
-        _musicSlider.value = AudioManager.Instance.AudioSettings.MusicVolume * 100;
-        _soundsSlider.value = AudioManager.Instance.AudioSettings.SoundsVolume * 100;
-        _sensivitySlider.value = SettingsManager.Instance.Settings.Sensivity;
+        _genSlider.value = SettingsManager.Instance.GetVolume(VolumeType.General) * 100;
+        _musicSlider.value = SettingsManager.Instance.GetVolume(VolumeType.Music) * 100;
+        _soundsSlider.value = SettingsManager.Instance.GetVolume(VolumeType.Sfx) * 100;
+        _sensivitySlider.value = SettingsManager.Instance.GetSensivity();
         _applyBtn.onClick.AddListener(() => _viewManager.ShowLast());
         _applyBtn.onClick.AddListener(() => ApplySettings());
     }
 
     private void ApplySettings()
     {
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.ChangeVolume(_genSlider.value / 100, _musicSlider.value / 100, _soundsSlider.value / 100);
-        if (SettingsManager.Instance != null)
-            SettingsManager.Instance.ChangeSensivity(Mathf.Round(_sensivitySlider.value * 100) * 0.01f);
+        SettingsValues settingsValues = new()
+        {
+            GenVolume = _genSlider.value / 100,
+            MusVolume = _musicSlider.value / 100,
+            SfxVolume = _soundsSlider.value / 100,
+            Sensivity = Mathf.Round(_sensivitySlider.value * 100) * 0.01f
+        };
+        SettingsManager.Instance.ApplySettings(settingsValues);
     }
 }

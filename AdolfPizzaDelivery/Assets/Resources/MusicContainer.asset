@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5b642c21f87614fbf0eeae780ff628, type: 3}
   m_Name: MusicContainer
   m_EditorClassIdentifier: 
-  musicMix:
+  MusicMix:
   - m_AssetGUID: c332aab85c7be17438d9c71d5297e8cf
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 5041743c86f7f8448997cd2af6608b12
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
@@ -57,4 +61,4 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  mainMenuMusic: {fileID: 0}
+  MainMenuMusic: {fileID: 0}

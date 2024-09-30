@@ -6,15 +6,15 @@ public class StarterBackpack : Backpack
     [SerializeField] private Transform _pizzaSpawnPoint;
     [SerializeField] private GameObject _pizzaBoxPrefab;
 
-    protected override int _capability { get; } = 3;
+    public override int Capability { get; } = 3;
 
     public override void SpawnPizzaBoxes(int amount)
     {
         int pizzaAmount;
-        if (_progressManager.GetLevelMaxOrders() <= _capability && amount <= _capability)
+        if (_progressManager.GetLevelMaxOrders() <= Capability && amount <= Capability)
             pizzaAmount = amount;
         else
-            pizzaAmount = _capability;
+            pizzaAmount = Capability;
 
         for (int i = 0; i < pizzaAmount; i++)
         {

@@ -8,19 +8,22 @@ public class DeliveryManager : MonoBehaviour
 {
     public static UnityEvent OnCreatedChain = new();
     public static UnityEvent OnCompletedChain = new();
-    public static UnityEvent OnCompletedOrder = new();
+    public static UnityEvent<DeliveryOrder> OnCompletedOrder = new();
 
     [HideInInspector] public OrderChain CurrentChain;
     [HideInInspector] public OrderState OrderState = OrderState.Default;
     public List<DeliveryPoint> DeliveryPoints;
     private List<DeliveryPoint> _pointsForIteration;
+
     [Inject] private ProgressManager _progressManager;
-    
+    [Inject] private ViewManager _viewManager;
 
     public void CreateOrderChain()
     {
-        CreateNewOrderChain(_progressManager.GetLevelMaxOrders());
-        OnCreatedChain.Invoke();
+        if (Player.Instance.Backpack.Capability < _progressManager.GetLevelMaxOrders())
+            CreateNewOrderChain(Player.Instance.Backpack.Capability);
+        else
+            CreateNewOrderChain(_progressManager.GetLevelMaxOrders());
         OrderState = OrderState.Active;
     }
 
@@ -44,18 +47,21 @@ public class DeliveryManager : MonoBehaviour
         }
         StartOrderChain();
     }
+    private DeliveryOrder FormOrder()
+    {
+        DeliveryOrder order = ScriptableObject.CreateInstance<DeliveryOrder>();
+        int destinationNum = Random.Range(0, _pointsForIteration.Count);
+        order.Destination = _pointsForIteration[destinationNum];
+        order.Destination.SetPointNumber(DeliveryPoints.IndexOf(_pointsForIteration[destinationNum]));
+        _viewManager.GetView<MapView>().AddPointToMark(DeliveryPoints.IndexOf(_pointsForIteration[destinationNum]));
+        _pointsForIteration.Remove(order.Destination);
+        return order;
+    }
 
     private void StartOrderChain()
     {
         Player.Instance.SpawnPizza(CurrentChain.orders.Count);
         CurrentChain.StartChain();
-    }
-
-    public DeliveryOrder FormOrder()
-    {
-        DeliveryOrder order = ScriptableObject.CreateInstance<DeliveryOrder>();
-        order.Destination = _pointsForIteration[Random.Range(0, _pointsForIteration.Count)];
-        _pointsForIteration.Remove(order.Destination);
-        return order;
+        OnCreatedChain.Invoke();
     }
 }

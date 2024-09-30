@@ -6,22 +6,16 @@ public abstract class Backpack : MonoBehaviour
 {
     protected List<Pizza> _pizzas = new();
 
-    protected Player _player;
-
     [Inject] protected ProgressManager _progressManager;
+    [Inject] private TouchCameraRotation cam;
 
-    protected abstract int _capability { get; }
+    public abstract int Capability { get; }
 
     public Pizza GetPizza()
     {
         Pizza pizza = _pizzas[_pizzas.Count - 1];
         _pizzas.Remove(pizza);
         return pizza;
-    }
-
-    protected virtual void Awake()
-    {
-        _player = GetComponent<Player>();
     }
 
     public abstract void SpawnPizzaBoxes(int amount);

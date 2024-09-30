@@ -33,7 +33,7 @@ public class MoneyManager : MonoBehaviour
         DeliveryManager.OnCompletedChain.RemoveListener(IncreasePlayerMoney);
         DeliveryManager.OnCompletedChain.RemoveListener(ClearOrderMoney);
     }
-    public void IncreaseOrderMoney()
+    public void IncreaseOrderMoney(DeliveryOrder _)
     {
         _orderMoney += (int)(Random.Range(8, 20) * _progressManager.GetLevelEarnMultiplier());
         _earnedMoney += (int)(Random.Range(2, 5) * _progressManager.GetLevelEarnMultiplier());

@@ -4,7 +4,7 @@ using UnityEngine;
 public class OrderChain : ScriptableObject
 {
     public List<DeliveryOrder> orders = new();
-    public int OrdersCompleted;
+    public int OrdersCompleted { get; private set; }
     private bool _isActive = false;
 
     private void OnEnable()
@@ -25,8 +25,15 @@ public class OrderChain : ScriptableObject
             _isActive = true;
             foreach (var order in orders)
             {
-                order.ConfigureOrder();
+                order.Configure();
             }
         }
     }
+
+    public void CompleteOrder(DeliveryOrder order)
+    {
+        DeliveryManager.OnCompletedOrder.Invoke(order);
+        Destroy(order);
+        OrdersCompleted++;
+    }    
 }

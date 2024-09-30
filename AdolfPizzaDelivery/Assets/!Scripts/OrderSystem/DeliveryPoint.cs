@@ -7,6 +7,13 @@ public class DeliveryPoint : MonoBehaviour
     [SerializeField] private Transform _pizzaPlacement;
     [Inject] private DestinationArrow _minimapArrow;
 
+    public int PointNumber { get; private set; }
+
+    public void SetPointNumber(int pointNum)
+    {
+        PointNumber = pointNum;
+    }
+
     public void CreateMarker(DeliveryOrder orderRef)
     {
         _minimapArrow.Markers.Add(pointMarker.transform);

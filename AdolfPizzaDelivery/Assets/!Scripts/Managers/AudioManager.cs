@@ -15,8 +15,6 @@ public class AudioManager : Singleton<AudioManager>
     public MusicState MusicState = MusicState.MainMenu;
     private AudioClip _musicResult;
 
-    public SettingsSO AudioSettings { get; private set; }
-
     protected override void Awake()
     {
         if (Instance != null)
@@ -31,7 +29,6 @@ public class AudioManager : Singleton<AudioManager>
         var musicSO = Resources.Load<MusicSO>("MusicContainer");
         _musicGameMix.AddRange(musicSO.MusicMix);
         Debug.Log(_musicGameMix.Count);
-        AudioSettings = Resources.Load<SettingsSO>("GameSettings");
     }
 
     public void AddSource(AudioSource source, SoundType type)
@@ -39,7 +36,7 @@ public class AudioManager : Singleton<AudioManager>
         if (type == SoundType.Music)
         {
             musicSources.Add(source);
-            if (SceneManager.GetActiveScene().name == "Game")
+            if (SceneManager.GetActiveScene().name == "FirstLocation")
                 StartCoroutine(PlayMusicMix());
         }
         else if (type == SoundType.Sound)
@@ -79,26 +76,31 @@ public class AudioManager : Singleton<AudioManager>
             _soundSources.Remove(source);
     }
 
-    private void UpdateSourcesVol()
+    public void UpdateSourcesVol()
     {
-        AudioListener.volume = AudioSettings.GeneralVolume;
+        AudioListener.volume = SettingsManager.Instance.GetVolume(VolumeType.General);
         if (musicSources != null)
         {
             foreach (var source in musicSources)
-                source.volume = AudioSettings.MusicVolume;
+                source.volume = SettingsManager.Instance.GetVolume(VolumeType.Music);
         }
         if (_soundSources != null)
         {
             foreach (var source in _soundSources)
-                source.volume = AudioSettings.SoundsVolume;
+                source.volume = SettingsManager.Instance.GetVolume(VolumeType.Sfx);
         }
     }
 
-    public void ChangeVolume(float gen, float mus, float snd)
+    private void ChangeVolume(float gen, float mus, float snd)
     {
-        AudioSettings.GeneralVolume = gen;
-        AudioSettings.MusicVolume = mus;
-        AudioSettings.SoundsVolume = snd;
+        SettingsValues settingsValues = new SettingsValues()
+        {
+            GenVolume = gen,
+            MusVolume = mus,
+            SfxVolume = snd,
+            Sensivity = SettingsManager.Instance.GetSensivity()
+        };
+        SettingsManager.Instance.ApplySettings(settingsValues);
         UpdateSourcesVol();
     }
 

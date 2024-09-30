@@ -4,12 +4,21 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    private float _gravity = 9.81f;
+
     [SerializeField] private FixedJoystick _joystick;
-    private Animator _animator;   
+
     [SerializeField] private float _moveSpeedX;
     [SerializeField] private float _moveSpeedZ;
+
     [SerializeField] private Camera _cam;
+    [SerializeField] private TouchCameraRotation _FPS;
+    [SerializeField] private TouchCameraRotation _TPS;
+    private TouchCameraRotation _currentCameraScript;
+
+    private Animator _animator;   
     private CharacterController _controller;
+
     private float _moveSpeedXValue;
     private string _currAnimState;
     private float _yVel;
@@ -22,29 +31,59 @@ public class PlayerController : MonoBehaviour
     private const string PLAYER_WALK_RIGHT = "Player_Walk_Right";
     #endregion
 
-    void Awake()
+    private void Awake()
     {
+        _currentCameraScript = _TPS;
         _moveSpeedXValue = _moveSpeedX;
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (OnGround())
             _yVel = 0;
         else
-            _yVel -= 9.8f * Time.deltaTime;
+            _yVel -= _gravity * Time.deltaTime;
 
         _controller.Move(transform.forward * _joystick.Vertical * Time.deltaTime * _moveSpeedX + transform.right * _joystick.Horizontal * _moveSpeedZ * Time.deltaTime / 3 + new Vector3(0, _yVel, 0) * Time.deltaTime);
-        transform.eulerAngles = new Vector3(0, _cam.transform.eulerAngles.y, 0);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + _currentCameraScript.YRotation, 0);
+        _currentCameraScript.XCamRotation = transform.eulerAngles.y;
 
+
+        if (_joystick.Vertical < 0)
+            _moveSpeedX = _moveSpeedXValue / 3;
+        else if (_joystick.Vertical > 0)
+            _moveSpeedX = _moveSpeedXValue;
+
+        HandleAnimations();
+    }
+
+    public void EnableFirstPersonView()
+    {
+        _TPS.gameObject.SetActive(false);
+        _FPS.gameObject.SetActive(true);
+        _currentCameraScript = _FPS;
+    }
+
+    public void EnableThirdPersonView()
+    {
+        _TPS.gameObject.SetActive(true);
+        _FPS.gameObject.SetActive(false);
+        _currentCameraScript = _TPS;
+    }
+
+    public void Teleport(Vector3 position)
+    {
+        _controller.enabled = false;
+        transform.position = position;
+        _controller.enabled = true;
+    }
+
+    private void HandleAnimations()
+    {
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
         {
-            if (_joystick.Vertical < 0)
-                _moveSpeedX = _moveSpeedXValue / 3;
-            else if (_joystick.Vertical > 0)
-                _moveSpeedX = _moveSpeedXValue;
             if (Mathf.Abs(_joystick.Horizontal) < 0.5f)
             {
                 if (_joystick.Vertical < 0)

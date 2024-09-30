@@ -6,5 +6,6 @@ public class Mushroom : MonoBehaviour, IUsable
     {
         Player.Instance.ActivateMushroomEffect();
         Destroy(gameObject);
+        Debug.Log("Destroy");
     }
 }

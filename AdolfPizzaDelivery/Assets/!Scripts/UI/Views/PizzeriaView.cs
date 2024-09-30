@@ -18,6 +18,7 @@ public class PizzeriaView : View
     [SerializeField] private Button _levelInfo;
     [SerializeField] private Button _getOrderChain;
     [SerializeField] private Button _completeOrderChain;
+    [SerializeField] private Button _map;
 
     [Inject] private ProgressManager _progressManager;
     [Inject] private DeliveryManager _deliveryManager;
@@ -36,13 +37,14 @@ public class PizzeriaView : View
     {
         _goBack.onClick.AddListener(() =>
         {
-            if (_viewManager.IsCurrentView<LevelInfoView>())
-            {
+            if (_viewManager.IsCurrentView<MapView>())
                 _viewManager.ShowLast();
-            }
+            if (_viewManager.IsCurrentView<LevelInfoView>())
+                _viewManager.ShowLast();
             _viewManager.ShowLast();
         });
-        _levelInfo.onClick.AddListener(ShowLevelInfo);
+        _map.onClick.AddListener(() => TryShow<MapView>());
+        _levelInfo.onClick.AddListener(() => TryShow<LevelInfoView>());
         _getOrderChain.onClick.AddListener(GetOrderChain);
         _completeOrderChain.onClick.AddListener(CompleteOrderChain);
         Update_levelProgress();
@@ -88,10 +90,10 @@ public class PizzeriaView : View
         _viewManager.ShowLast();
     }
 
-    private void ShowLevelInfo()
+    private void TryShow<T>() where T: View
     {
-        if (!_viewManager.IsCurrentView<LevelInfoView>())
-            _viewManager.Show<LevelInfoView>(true, false);
+        if (!_viewManager.IsCurrentView<T>())
+            _viewManager.Show<T>(true, false);
         else
             _viewManager.ShowLast();
     }
